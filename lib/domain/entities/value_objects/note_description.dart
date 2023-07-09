@@ -44,5 +44,9 @@ class NoteDescription extends ValueObject<String> {
     );
   }
 
+  factory NoteDescription.initial() {
+    return NoteDescription(description: '');
+  }
+
   const NoteDescription._({required super.value});
 }

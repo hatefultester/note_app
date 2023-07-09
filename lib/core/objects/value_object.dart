@@ -6,6 +6,8 @@ import '../error/value_failure.dart';
 abstract class ValueObject<T> extends Equatable {
   final Either<ValueFailure<T>, T> value;
 
+  bool get isValid => value.isRight();
+
   const ValueObject({required this.value});
 
   @override

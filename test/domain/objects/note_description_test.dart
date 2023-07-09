@@ -4,12 +4,11 @@ import 'package:note_app/domain/entities/value_objects/note_description.dart';
 
 main() {
   group("NoteDescription test cases", () {
-    test("NoteDescription should hold MinimalLengthNotReachedFailure", () {
-      const String emptyDescription = '';
-
+    test("NoteDescription initial hold MinimalLengthNotReachedFailure", () {
       final NoteDescription noteDescription =
-          NoteDescription(description: emptyDescription);
+          NoteDescription.initial();
 
+      expect(noteDescription.isValid, false);
       expect(noteDescription.value.fold((l) => l, (r) => r),
           isA<MinimalLengthNotReachedFailure>());
     });
@@ -24,6 +23,7 @@ main() {
       final NoteDescription noteDescription =
           NoteDescription(description: emptyDescription);
 
+      expect(noteDescription.isValid, false);
       expect(noteDescription.value.fold((l) => l, (r) => r),
           isA<MinimalLengthNotReachedFailure>());
     });
@@ -38,6 +38,7 @@ main() {
       final NoteDescription noteDescription =
           NoteDescription(description: longDescription);
 
+      expect(noteDescription.isValid, false);
       expect(noteDescription.value.fold((l) => l, (r) => r),
           isA<MaximalLengthReachedFailure>());
     });
@@ -48,6 +49,7 @@ main() {
       final NoteDescription noteDescription =
           NoteDescription(description: validDescription);
 
+      expect(noteDescription.isValid, true);
       expect(noteDescription.value.fold((l) => l, (r) => r), isA<String>());
       expect(noteDescription.value.fold((l) => l, (r) => r), validDescription);
     });
