@@ -1,6 +1,6 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:note_app/core/error/value_failure.dart';
-import 'package:note_app/domain/objects/note_description.dart';
+import 'package:note_app/domain/entities/value_objects/note_description.dart';
 
 main() {
   group("NoteDescription test cases", () {

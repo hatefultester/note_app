@@ -1,14 +1,13 @@
 import 'package:dartz/dartz.dart';
-import 'package:note_app/core/error/value_failure.dart';
+import '../../../core/error/value_failure.dart';
 
-import '../../core/objects/value_object.dart';
-import '../rules/validation_rules.dart';
+import '../../../core/objects/value_object.dart';
+import '../../business_rules/note_validation_rules.dart';
 
 Either<ValueFailure<String>, String> _validateNoteDescription(
     {required String description}) {
   final int descriptionLength = description.length;
   final int descriptionLengthWithoutSpaces = description.replaceAll(" ", '').length;
-
 
   bool minimalLengthReached = descriptionLengthWithoutSpaces > noteDescriptionMinLength;
   bool maximalLengthReached = descriptionLength > noteDescriptionMaxLength;

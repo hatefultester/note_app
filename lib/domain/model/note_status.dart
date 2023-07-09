@@ -1,5 +1,5 @@
 import 'package:equatable/equatable.dart';
-import 'package:note_app/domain/enums/note_priority.dart';
+import 'enums/note_priority.dart';
 
 class NoteStatusModel extends Equatable {
   final bool isNoteFinished;
