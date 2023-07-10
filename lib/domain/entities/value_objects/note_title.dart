@@ -22,6 +22,5 @@ class NoteTitle extends ValueObject<String> {
 
   factory NoteTitle.initial() => NoteTitle(title: '');
 
-
   const NoteTitle._({required super.value});
 }
