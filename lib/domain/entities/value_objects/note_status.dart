@@ -1,10 +1,18 @@
 import 'package:dartz/dartz.dart';
+import 'package:note_app/core/error/value_failure.dart';
 
 import '../../business_rules/note_validation_rules.dart';
 import '../../model/note_status.dart';
 import '../../../core/objects/value_object.dart';
 
 class NoteStatus extends ValueObject<NoteStatusModel> {
+  factory NoteStatus({required NoteStatusModel model}) {
+    final Either<ValueFailure<NoteStatusModel>, NoteStatusModel>
+        validatedNoteStatus = Right(model);
+
+    return NoteStatus._(value: validatedNoteStatus);
+  }
+
   factory NoteStatus.initial() {
     const NoteStatusModel initialStatus = NoteStatusModel(
       isNoteFinished: false,
