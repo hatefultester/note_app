@@ -1,52 +1,25 @@
 import 'package:dartz/dartz.dart';
-import '../../../core/error/value_failure.dart';
 
+import '../../../core/error/value_failure.dart';
+import '../../../core/validators/length_validator.dart';
 import '../../../core/objects/value_object.dart';
 import '../../business_rules/note_validation_rules.dart';
 
-Either<ValueFailure<String>, String> _validateNoteDescription(
-    {required String description}) {
-  final int descriptionLength = description.length;
-  final int descriptionLengthWithoutSpaces = description.replaceAll(" ", '').length;
-
-  bool minimalLengthReached = descriptionLengthWithoutSpaces > noteDescriptionMinLength;
-  bool maximalLengthReached = descriptionLength > noteDescriptionMaxLength;
-
-  if (!minimalLengthReached) {
-    return Left(
-      MinimalLengthNotReachedFailure(
-        value: description,
-        message: 'Minimal length required for description was not reached!',
-        minimalLengthRequired: noteDescriptionMinLength,
-        lengthReached: descriptionLengthWithoutSpaces,
-      ),
-    );
-  }
-
-  if(maximalLengthReached) {
-    return Left(
-      MaximalLengthReachedFailure(
-        value: description,
-        message: 'Minimal length required for description was not reached!',
-        maximalLengthAllowed: noteDescriptionMinLength,
-        lengthReached: descriptionLength,
-      ),
-    );
-  }
-
-  return Right(description);
-}
-
 class NoteDescription extends ValueObject<String> {
   factory NoteDescription({required String description}) {
+    final Either<ValueFailure<String>, String> validatedDescription =
+        validateStringLength(
+      value: description,
+      minLength: NoteValidationRules.noteDescriptionMinLength,
+      maxLength: NoteValidationRules.noteDescriptionMaxLength,
+    );
+
     return NoteDescription._(
-      value: _validateNoteDescription(description: description),
+      value: validatedDescription,
     );
   }
 
-  factory NoteDescription.initial() {
-    return NoteDescription(description: '');
-  }
+  factory NoteDescription.initial() => NoteDescription(description: '');
 
   const NoteDescription._({required super.value});
 }

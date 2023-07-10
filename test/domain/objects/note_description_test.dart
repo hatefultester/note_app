@@ -4,7 +4,7 @@ import 'package:note_app/domain/entities/value_objects/note_description.dart';
 
 main() {
   group("NoteDescription test cases", () {
-    test("NoteDescription initial hold MinimalLengthNotReachedFailure", () {
+    test("NoteDescription with empty initial value should hold MinimalLengthNotReachedFailure", () {
       final NoteDescription noteDescription =
           NoteDescription.initial();
 
@@ -13,7 +13,7 @@ main() {
           isA<MinimalLengthNotReachedFailure>());
     });
 
-    test("NoteDescription should hold MinimalLengthNotReachedFailure", () {
+    test("NoteDescription with value that has just spaces should hold MinimalLengthNotReachedFailure", () {
       String emptyDescription = '';
 
       for (int i = 0; i < 100; i++) {
@@ -28,7 +28,7 @@ main() {
           isA<MinimalLengthNotReachedFailure>());
     });
 
-    test("NoteDescription should hold MaximalLengthReachedFailure", () {
+    test("NoteDescription with long string input should hold MaximalLengthReachedFailure", () {
       String longDescription = '';
 
       for (int i = 0; i < 300; i++) {
@@ -43,7 +43,7 @@ main() {
           isA<MaximalLengthReachedFailure>());
     });
 
-    test("NoteDescription should hold MaximalLengthReachedFailure", () {
+    test("NoteDescription with valid input should hold String value of description", () {
       String validDescription = 'This is example of valid description';
 
       final NoteDescription noteDescription =
