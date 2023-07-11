@@ -1,5 +1,5 @@
 
-import '../../../../core/objects/value_object.dart';
+import '../../core/error/value_object.dart';
 import '../interfaces/i_note_validator.dart';
 
 class NoteTitleValueObject<T extends INoteValidator> extends ValueObject<String> {

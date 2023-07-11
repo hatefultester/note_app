@@ -242,8 +242,17 @@ class NoteFactory<T extends INoteValidator> {
       List<NoteEntity<T>> notes = [];
       List<Map<String, dynamic>> mapList = jsonDecode(source);
       for (var element in mapList) {
-        final NoteEntity<T> entity = getNoteFromMap(map: element);
-        notes.add(entity);
+        final Either<Failure, NoteEntity<T>> entityResult =
+            getNoteFromMap(map: element);
+
+        entityResult.fold(
+          (l) {
+            return Left(l);
+          },
+          (r) {
+            notes.add(r);
+          },
+        );
       }
       return Right(notes);
     } on Exception catch (e) {
@@ -259,8 +268,17 @@ class NoteFactory<T extends INoteValidator> {
       List<Map<String, dynamic>> mapList = [];
 
       for (var element in notes) {
-        final Map<String, dynamic> map = convertNoteToMap(note: element);
-        mapList.add(map);
+        final Either<Failure, Map<String, dynamic>> mapResult =
+            convertNoteToMap(note: element);
+
+        mapResult.fold(
+          (l) {
+            return Left(l);
+          },
+          (r) {
+            mapList.add(r);
+          },
+        );
       }
 
       String str = jsonEncode(
@@ -274,63 +292,86 @@ class NoteFactory<T extends INoteValidator> {
     }
   }
 
-  NoteEntity<T> getNoteFromMap({required Map<String, dynamic> map}) {
-    return NoteEntity(
-      id: map['id'],
-      description: NoteDescriptionValueObject(
-        description: map['description'],
-        validator: validator,
-      ),
-      title: NoteTitleValueObject(
-        title: map['title'],
-        validator: validator,
-      ),
-      timeStamp: NoteTimeStampValueObject(
-        model: NoteTimeStampModel(
-          creationTime:
-              DateTime.fromMillisecondsSinceEpoch(map['creationTime']),
-          lastEditTime: optionOf(map['editTime'] is int
-              ? DateTime.fromMillisecondsSinceEpoch(
-                  map['editTime'],
-                )
-              : null),
-        ),
-        validator: validator,
-      ),
-      status: NoteStatusValueObject(
-        model: NoteStatusModel(
-          isNoteFinished: map['isFinished'],
-          dueDate: optionOf(
-            map['dueDate'] is int
-                ? DateTime.fromMillisecondsSinceEpoch(
-                    map['dueDate'],
-                  )
-                : null,
+  Either<Failure, NoteEntity<T>> getNoteFromMap(
+      {required Map<String, dynamic> map}) {
+    try {
+      return Right(
+        NoteEntity(
+          id: map['id'],
+          description: NoteDescriptionValueObject(
+            description: map['description'],
+            validator: validator,
           ),
-          priority: EnumHelper.enumFromString<NotePriority>(
-                  NotePriority.values, map['priority'])
-              .fold(
-            (l) => NotePriority.major,
-            (r) => r,
+          title: NoteTitleValueObject(
+            title: map['title'],
+            validator: validator,
+          ),
+          timeStamp: NoteTimeStampValueObject(
+            model: NoteTimeStampModel(
+              creationTime:
+                  DateTime.fromMillisecondsSinceEpoch(map['creationTime']),
+              lastEditTime: optionOf(map['editTime'] is int
+                  ? DateTime.fromMillisecondsSinceEpoch(
+                      map['editTime'],
+                    )
+                  : null),
+            ),
+            validator: validator,
+          ),
+          status: NoteStatusValueObject(
+            model: NoteStatusModel(
+              isNoteFinished: map['isFinished'],
+              dueDate: optionOf(
+                map['dueDate'] is int
+                    ? DateTime.fromMillisecondsSinceEpoch(
+                        map['dueDate'],
+                      )
+                    : null,
+              ),
+              priority: EnumHelper.enumFromString<NotePriority>(
+                      NotePriority.values, map['priority'])
+                  .fold(
+                (l) => NotePriority.major,
+                (r) => r,
+              ),
+            ),
+            validator: validator,
           ),
         ),
-        validator: validator,
-      ),
-    );
+      );
+    } on Exception catch (e) {
+      return const Left(ConvertingMapToNoteFailure());
+    }
   }
 
-  Map<String, dynamic> convertNoteToMap({required NoteEntity<T> note}) {
-    return {
-      'id': note.id,
-      'title': note.title.object,
-      'description': note.description.object,
-      'priority': describeEnum(note.status.object.priority),
-      'dueDate': note.status.object.dueDate
-          .fold(() => null, (a) => a.millisecondsSinceEpoch),
-      'isFinished': note.status.object.isNoteFinished,
-      'creationTime': note.timeStamp.object.creationTime.millisecondsSinceEpoch,
-      'editTime': note.timeStamp.object.lastEditTime
-          .fold(() => null, (a) => a.millisecondsSinceEpoch),
-    };
+  Either<Failure, Map<String, dynamic>> convertNoteToMap(
+      {required NoteEntity<T> note}) {
+    try {
+      return Right({
+        'id': note.id,
+        'title': note.title.object,
+        'description': note.description.object,
+        'priority': describeEnum(note.status.object.priority),
+        'dueDate': note.status.object.dueDate
+            .fold(() => null, (a) => a.millisecondsSinceEpoch),
+        'isFinished': note.status.object.isNoteFinished,
+        'creationTime':
+            note.timeStamp.object.creationTime.millisecondsSinceEpoch,
+        'editTime': note.timeStamp.object.lastEditTime
+            .fold(() => null, (a) => a.millisecondsSinceEpoch),
+      });
+    } on Exception catch (e) {
+      return const Left(MappingNoteToMapFailure());
+    }
   }
+}
+
+class ConvertingMapToNoteFailure extends Failure {
+  const ConvertingMapToNoteFailure(
+      {super.message = 'Failure during conversion of map to Note'});
+}
+
+class MappingNoteToMapFailure extends Failure {
+  const MappingNoteToMapFailure(
+      {super.message = 'Failure during conversion of Note to Map'});
 }

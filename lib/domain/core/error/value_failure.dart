@@ -52,3 +52,4 @@ class MaximalLengthReachedFailure extends ValueFailure<String> {
   @override
   bool? get stringify => true;
 }
+
