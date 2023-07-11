@@ -22,17 +22,9 @@ abstract class NoteRepository<P extends INotePersistence, V extends INoteValidat
     required NoteEntity<V> note,
   });
 
-  Future<Either<Failure, Unit>> storeNotes();
+  Future<Either<Failure, Unit>> storeNotes({required List<NoteEntity<V>> notes});
 
-  Future<Either<Failure, NoteEntity<V>>> getNotes();
-
-  Future<Either<Failure, NoteEntity<V>>> getNoteById({
-    required String id,
-  });
-
-  Future<Either<Failure, Unit>> removeNoteById({
-    required String id,
-  });
+  Future<Either<Failure, List<NoteEntity<V>>>> getNotes();
 
   Future<Either<Failure, Unit>> removeNote({
     required NoteEntity<V> note,
