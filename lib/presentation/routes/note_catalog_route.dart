@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:note_app/presentation/routes/note_create_route.dart';
 
 import '../../application/bloc/note_catalog/note_catalog_bloc.dart';
 
@@ -9,6 +10,22 @@ class NoteCatalogRoute extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        actions: [
+          IconButton(
+            onPressed: () {
+              Navigator.of(context).push(
+                MaterialPageRoute(builder: (context) {
+                  return const NoteCreateRoute();
+                }),
+              );
+            },
+            icon: const Icon(
+              Icons.add,
+            ),
+          ),
+        ],
+      ),
       body: BlocConsumer<NoteCatalogBloc, NoteCatalogState>(
         listener: (context, state) {},
         builder: (context, state) {
