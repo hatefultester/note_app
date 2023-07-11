@@ -1,7 +1,4 @@
-
-import 'package:dartz/dartz.dart';
-
-import '../../../domain/note/entity/note_entity.dart';
+part of 'note_bloc.dart';
 
 sealed class NoteEvent {}
 

@@ -1,7 +1,10 @@
+import 'package:note_app/domain/note/model/note_time_stamp_model.dart';
+
 import 'failure.dart';
 
 abstract class ValueFailure<T> implements Failure {
   final T value;
+  @override
   final String message;
   final dynamic stackTrace;
 
@@ -53,3 +56,9 @@ class MaximalLengthReachedFailure extends ValueFailure<String> {
   bool? get stringify => true;
 }
 
+class InvalidLastEditTimeFailure extends ValueFailure<NoteTimeStampModel> {
+  InvalidLastEditTimeFailure({required super.value, required super.message});
+
+  @override
+  List<Object?> get props => [value, message];
+}
