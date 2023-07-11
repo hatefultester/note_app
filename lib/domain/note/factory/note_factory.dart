@@ -1,6 +1,10 @@
+import 'dart:convert';
+
 import 'package:dartz/dartz.dart';
+import 'package:flutter/foundation.dart';
 
 import '../../../../core/error/failure.dart';
+import '../../../core/validators/enum_helper.dart';
 import '../entity/note_entity.dart';
 import '../interfaces/i_note_validator.dart';
 import '../model/note_models.dart';
@@ -230,5 +234,103 @@ class NoteFactory<T extends INoteValidator> {
         UnexpectedFailure(message: 'set title failed with exception $e'),
       );
     }
+  }
+
+  Future<Either<Failure, List<NoteEntity<T>>>> getListOfNotesFromJSONString(
+      {required String source}) async {
+    try {
+      List<NoteEntity<T>> notes = [];
+      List<Map<String, dynamic>> mapList = jsonDecode(source);
+      for (var element in mapList) {
+        final NoteEntity<T> entity = getNoteFromMap(map: element);
+        notes.add(entity);
+      }
+      return Right(notes);
+    } on Exception catch (e) {
+      return const Left(
+        JsonDecodingFailure(),
+      );
+    }
+  }
+
+  Future<Either<Failure, String>> convertListOfNotesToJSONString(
+      {required List<NoteEntity<T>> notes}) async {
+    try {
+      List<Map<String, dynamic>> mapList = [];
+
+      for (var element in notes) {
+        final Map<String, dynamic> map = convertNoteToMap(note: element);
+        mapList.add(map);
+      }
+
+      String str = jsonEncode(
+        mapList,
+      );
+      return Right(str);
+    } catch (e) {
+      return const Left(
+        JsonEncodingFailure(),
+      );
+    }
+  }
+
+  NoteEntity<T> getNoteFromMap({required Map<String, dynamic> map}) {
+    return NoteEntity(
+      id: map['id'],
+      description: NoteDescriptionValueObject(
+        description: map['description'],
+        validator: validator,
+      ),
+      title: NoteTitleValueObject(
+        title: map['title'],
+        validator: validator,
+      ),
+      timeStamp: NoteTimeStampValueObject(
+        model: NoteTimeStampModel(
+          creationTime:
+              DateTime.fromMillisecondsSinceEpoch(map['creationTime']),
+          lastEditTime: optionOf(map['editTime'] is int
+              ? DateTime.fromMillisecondsSinceEpoch(
+                  map['editTime'],
+                )
+              : null),
+        ),
+        validator: validator,
+      ),
+      status: NoteStatusValueObject(
+        model: NoteStatusModel(
+          isNoteFinished: map['isFinished'],
+          dueDate: optionOf(
+            map['dueDate'] is int
+                ? DateTime.fromMillisecondsSinceEpoch(
+                    map['dueDate'],
+                  )
+                : null,
+          ),
+          priority: EnumHelper.enumFromString<NotePriority>(
+                  NotePriority.values, map['priority'])
+              .fold(
+            (l) => NotePriority.major,
+            (r) => r,
+          ),
+        ),
+        validator: validator,
+      ),
+    );
+  }
+
+  Map<String, dynamic> convertNoteToMap({required NoteEntity<T> note}) {
+    return {
+      'id': note.id,
+      'title': note.title.object,
+      'description': note.description.object,
+      'priority': describeEnum(note.status.object.priority),
+      'dueDate': note.status.object.dueDate
+          .fold(() => null, (a) => a.millisecondsSinceEpoch),
+      'isFinished': note.status.object.isNoteFinished,
+      'creationTime': note.timeStamp.object.creationTime.millisecondsSinceEpoch,
+      'editTime': note.timeStamp.object.lastEditTime
+          .fold(() => null, (a) => a.millisecondsSinceEpoch),
+    };
   }
 }
