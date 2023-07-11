@@ -32,3 +32,12 @@ class MappingNoteToMapFailure extends Failure {
   const MappingNoteToMapFailure(
       {super.message = 'Failure during conversion of Note to Map'});
 }
+
+class NoDataFoundFailure extends Failure {
+  const NoDataFoundFailure(
+      {super.message = 'No data was found in persistence'});
+}
+
+class StoringFailure extends Failure {
+  const StoringFailure({super.message = 'Error happen during storing'});
+}

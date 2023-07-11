@@ -25,7 +25,7 @@ class NoteApp extends StatelessWidget {
             create: (context) {
               final repository =
                   RepositoryProvider.of<NoteRepositoryImpl>(context);
-              return NoteCatalogBloc(repository);
+              return NoteCatalogBloc(repository)..add(CatalogRefreshed(),);
             },
           )
         ],
