@@ -3,9 +3,10 @@ import '../factory/note_factory.dart';
 import '../interfaces/i_note_persistence.dart';
 import '../../../../core/error/failure.dart';
 import '../entity/note_entity.dart';
+import '../interfaces/i_note_validator.dart';
 
-abstract class NoteRepository<P extends INotePersistence> {
-  final NoteFactory factory;
+abstract class NoteRepository<P extends INotePersistence, V extends INoteValidator> {
+  final NoteFactory<V> factory;
   final P persistence;
 
   NoteRepository({
@@ -14,18 +15,18 @@ abstract class NoteRepository<P extends INotePersistence> {
   });
 
   Future<Either<Failure, Unit>> addNote({
-    required NoteEntity note,
+    required NoteEntity<V> note,
   });
 
   Future<Either<Failure, Unit>> saveNote({
-    required NoteEntity note,
+    required NoteEntity<V> note,
   });
 
   Future<Either<Failure, Unit>> storeNotes();
 
-  Future<Either<Failure, NoteEntity>> getNotes();
+  Future<Either<Failure, NoteEntity<V>>> getNotes();
 
-  Future<Either<Failure, NoteEntity>> getNoteById({
+  Future<Either<Failure, NoteEntity<V>>> getNoteById({
     required String id,
   });
 
@@ -34,7 +35,7 @@ abstract class NoteRepository<P extends INotePersistence> {
   });
 
   Future<Either<Failure, Unit>> removeNote({
-    required NoteEntity note,
+    required NoteEntity<V> note,
   });
 
   Future<Either<Failure, Unit>> removeAllNotes();
