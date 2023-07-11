@@ -3,7 +3,7 @@ import 'dart:convert';
 import 'package:dartz/dartz.dart';
 import 'package:flutter/foundation.dart';
 
-import '../../../../core/error/failure.dart';
+import '../../core/error/failure.dart';
 import '../../../core/validators/enum_helper.dart';
 import '../entity/note_entity.dart';
 import '../interfaces/i_note_validator.dart';
@@ -328,7 +328,7 @@ class NoteFactory<T extends INoteValidator> {
                       )
                     : null,
               ),
-              priority: EnumHelper.enumFromString<NotePriority>(
+              priority: EnumMapper.enumFromString<NotePriority>(
                       NotePriority.values, map['priority'])
                   .fold(
                 (l) => NotePriority.major,
@@ -364,14 +364,4 @@ class NoteFactory<T extends INoteValidator> {
       return const Left(MappingNoteToMapFailure());
     }
   }
-}
-
-class ConvertingMapToNoteFailure extends Failure {
-  const ConvertingMapToNoteFailure(
-      {super.message = 'Failure during conversion of map to Note'});
-}
-
-class MappingNoteToMapFailure extends Failure {
-  const MappingNoteToMapFailure(
-      {super.message = 'Failure during conversion of Note to Map'});
 }

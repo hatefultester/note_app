@@ -5,8 +5,8 @@ import 'package:dartz/dartz.dart';
 import 'package:logger/logger.dart';
 
 import '../../../core/validators/enum_helper.dart';
-import '../../../core/error/failure.dart';
-import '../../../core/error/value_failure.dart';
+import '../../../domain/core/error/failure.dart';
+import '../../../domain/core/error/value_failure.dart';
 import '../../../domain/note/entity/note_entity.dart';
 import '../../../domain/note/model/note_priority_model.dart';
 import '../../../domain/note/repository/note_repository.dart';
@@ -127,7 +127,7 @@ class NoteBloc extends Bloc<NoteEvent, NoteState> {
       final NoteLoaded currentState = state as NoteLoaded;
       final NoteEntity currentEntity = currentState.note;
       final Either<ValueFailure<String>, NotePriority> notePriority =
-          EnumHelper.enumFromString<NotePriority>(
+          EnumMapper.enumFromString<NotePriority>(
         NotePriority.values,
         event.value,
       );

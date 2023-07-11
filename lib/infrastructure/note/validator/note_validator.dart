@@ -1,5 +1,5 @@
 import 'package:dartz/dartz.dart';
-import '../../../core/error/value_failure.dart';
+import '../../../domain/core/error/value_failure.dart';
 import '../../../domain/note/interfaces/note_interfaces.dart';
 import '../../../domain/note/model/note_models.dart';
 

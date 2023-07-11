@@ -22,3 +22,13 @@ class JsonDecodingFailure extends Failure {
   const JsonDecodingFailure(
       {super.message = 'Error happen during JSON String conversion to object'});
 }
+
+class ConvertingMapToNoteFailure extends Failure {
+  const ConvertingMapToNoteFailure(
+      {super.message = 'Failure during conversion of map to Note'});
+}
+
+class MappingNoteToMapFailure extends Failure {
+  const MappingNoteToMapFailure(
+      {super.message = 'Failure during conversion of Note to Map'});
+}

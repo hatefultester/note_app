@@ -1,7 +1,7 @@
 import 'package:dartz/dartz.dart';
 import 'package:equatable/equatable.dart';
 
-import '../error/value_failure.dart';
+import 'value_failure.dart';
 
 abstract class ValueObject<T> extends Equatable {
   final Either<ValueFailure<T>, T> value;

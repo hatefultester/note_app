@@ -1,5 +1,5 @@
 import 'package:dartz/dartz.dart';
-import 'package:note_app/core/error/failure.dart';
+import 'package:note_app/domain/core/error/failure.dart';
 import 'package:note_app/domain/note/interfaces/i_note_persistence.dart';
 
 class NotePersistence implements INotePersistence {

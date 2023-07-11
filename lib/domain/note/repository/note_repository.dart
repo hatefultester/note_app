@@ -1,7 +1,7 @@
 import 'package:dartz/dartz.dart';
 import '../factory/note_factory.dart';
 import '../interfaces/i_note_persistence.dart';
-import '../../../../core/error/failure.dart';
+import '../../core/error/failure.dart';
 import '../entity/note_entity.dart';
 import '../interfaces/i_note_validator.dart';
 
