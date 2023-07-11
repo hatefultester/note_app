@@ -8,6 +8,8 @@ abstract class ValueObject<T> extends Equatable {
 
   bool get isValid => value.isRight();
 
+  T get object => value.fold((l) => l.value, (r) => r);
+
   const ValueObject({required this.value});
 
   @override

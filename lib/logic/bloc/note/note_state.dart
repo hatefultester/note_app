@@ -1,7 +1,10 @@
+import 'package:dartz/dartz.dart';
 import 'package:equatable/equatable.dart';
 
-import '../../../domain/entities/note.dart';
+import '../../../domain/feature/note/entity/note_entity.dart';
 import 'note_event.dart';
+
+const Option<String> _noneOption = None();
 
 abstract class NoteState extends Equatable {
   const NoteState();
@@ -20,29 +23,24 @@ class NoteInitial extends NoteSingletonState {}
 class NoteLoading extends NoteSingletonState {}
 
 class NoteLoaded extends NoteState {
-  final Note note;
-  final Note originalNote;
-  final bool showExitConfirmationDialog;
-  final bool showRestoreDialog;
+  final NoteEntity note;
+  final NoteEntity originalNote;
+  final Option<String> snackBarMessageOption;
 
   const NoteLoaded({
     required this.originalNote,
     required this.note,
-    this.showExitConfirmationDialog = false,
-    this.showRestoreDialog = false,
+    this.snackBarMessageOption = _noneOption,
   });
 
   NoteLoaded copyWith({
-    bool? showRestoreDialog,
-    bool? showExitConfirmationDialog,
-    Note? note,
+    String? snackBarMessage,
+    NoteEntity? note,
   }) {
     return NoteLoaded(
       originalNote: originalNote,
       note: note ?? this.note,
-      showExitConfirmationDialog:
-          showExitConfirmationDialog ?? this.showExitConfirmationDialog,
-      showRestoreDialog: showRestoreDialog ?? this.showRestoreDialog,
+      snackBarMessageOption: optionOf(snackBarMessage),
     );
   }
 

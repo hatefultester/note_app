@@ -1,14 +1,15 @@
+import 'package:dartz/dartz.dart';
 import 'package:equatable/equatable.dart';
-import 'enums/note_priority.dart';
+import 'note_priority_model.dart';
 
 class NoteStatusModel extends Equatable {
   final bool isNoteFinished;
   final NotePriority priority;
-  final DateTime? dueDate;
+  final Option<DateTime> dueDate;
 
   const NoteStatusModel({
     required this.isNoteFinished,
-    this.dueDate,
+    required this.dueDate,
     required this.priority,
   });
 

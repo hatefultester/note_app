@@ -6,6 +6,17 @@ abstract class ValueFailure<T> implements Failure {
   final dynamic stackTrace;
 
   const ValueFailure({required this.value, required this.message, this.stackTrace});
+
+  @override
+  bool? get stringify => true;
+}
+
+class InvalidEnumValue extends ValueFailure<String> {
+  InvalidEnumValue({required super.value, required super.message, super.stackTrace});
+
+  @override
+  List<Object?> get props => [value, stackTrace, message];
+
 }
 
 class MinimalLengthNotReachedFailure extends ValueFailure<String> {
@@ -22,8 +33,6 @@ class MinimalLengthNotReachedFailure extends ValueFailure<String> {
   @override
   List<Object?> get props => [value, message, stackTrace, minimalLengthRequired, lengthReached];
 
-  @override
-  bool? get stringify => true;
 }
 
 class MaximalLengthReachedFailure extends ValueFailure<String> {
