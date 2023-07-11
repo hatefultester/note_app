@@ -1,7 +1,6 @@
 import 'package:equatable/equatable.dart';
-import 'package:flutter/foundation.dart';
-import '../interfaces/i_note_validator.dart';
 
+import '../interfaces/note_interfaces.dart';
 import '../objects/note_value_objects.dart';
 
 class NoteEntity<T extends INoteValidator> extends Equatable {

@@ -1,17 +1,17 @@
+
 import 'dart:async';
 
 import 'package:bloc/bloc.dart';
 import 'package:dartz/dartz.dart';
+import 'package:equatable/equatable.dart';
 import 'package:logger/logger.dart';
 
-import '../../../core/validators/enum_helper.dart';
-import '../../../domain/core/error/failure.dart';
-import '../../../domain/core/error/value_failure.dart';
+import '../../../domain/core/core.dart';
 import '../../../domain/note/entity/note_entity.dart';
-import '../../../domain/note/model/note_priority_model.dart';
 import '../../../domain/note/repository/note_repository.dart';
-import 'note_event.dart';
-import 'note_state.dart';
+
+part 'note_event.dart';
+part 'note_state.dart';
 
 class NoteBloc extends Bloc<NoteEvent, NoteState> {
   final Logger _logger;
@@ -32,26 +32,37 @@ class NoteBloc extends Bloc<NoteEvent, NoteState> {
 
   FutureOr<void> _handleNewNoteStarted(
       NewNoteStarted event, Emitter<NoteState> emit) async {
-    event.value.fold(() async {
-      final Either<Failure, NoteEntity> entityResult =
-          await _repository.factory.createNewNote();
+    event.value.fold(
+      () async {
+        final Either<Failure, NoteEntity> entityResult =
+            await _repository.factory.createNewNote();
 
-      entityResult.fold(
-        (l) {
-          _logger.e(l.message);
-          emit(
-            const NoteError(errorMessage: 'Loading failed'),
-          );
-        },
-        (r) => emit(
-          NoteLoaded(originalNote: r, note: r),
-        ),
-      );
-    }, (a) {
-      emit(
-        NoteLoaded(originalNote: a, note: a),
-      );
-    });
+        entityResult.fold(
+          (l) {
+            _logger.e(l.message);
+            emit(
+              const NoteError(
+                errorMessage: 'Loading failed',
+              ),
+            );
+          },
+          (r) => emit(
+            NoteLoaded(
+              originalNote: r,
+              note: r,
+            ),
+          ),
+        );
+      },
+      (a) {
+        emit(
+          NoteLoaded(
+            originalNote: a,
+            note: a,
+          ),
+        );
+      },
+    );
   }
 
   FutureOr<void> _handleNoteDescriptionEdited(
@@ -69,7 +80,9 @@ class NoteBloc extends Bloc<NoteEvent, NoteState> {
         (l) {
           _logger.e(l.message);
           emit(
-            const NoteError(errorMessage: 'note description edit failed'),
+            const NoteError(
+              errorMessage: 'note description edit failed',
+            ),
           );
         },
         (r) => emit(
@@ -83,7 +96,8 @@ class NoteBloc extends Bloc<NoteEvent, NoteState> {
       _logger.e(e);
       emit(
         const NoteError(
-            errorMessage: 'note description edit failed unexpectedly'),
+          errorMessage: 'note description edit failed unexpectedly',
+        ),
       );
     }
   }
@@ -126,43 +140,35 @@ class NoteBloc extends Bloc<NoteEvent, NoteState> {
     try {
       final NoteLoaded currentState = state as NoteLoaded;
       final NoteEntity currentEntity = currentState.note;
-      final Either<ValueFailure<String>, NotePriority> notePriority =
-          EnumMapper.enumFromString<NotePriority>(
-        NotePriority.values,
-        event.value,
+
+      final Either<Failure, NoteEntity> newEntityResult =
+          await _repository.factory.setPriorityFromStringInput(
+        priority: event.value,
+        entity: currentEntity,
       );
 
-      notePriority.fold((l) async {
-        _logger.e(l.message);
-        emit(
-          const NoteError(errorMessage: 'Parsing note priority failed'),
-        );
-      }, (r) async {
-        final Either<Failure, NoteEntity> newEntityResult =
-            await _repository.factory.setPriority(
-          priority: r,
-          entity: currentEntity,
-        );
-
-        newEntityResult.fold(
-          (l) {
-            _logger.e(l.message);
-            emit(
-              const NoteError(errorMessage: 'note priority edit failed'),
-            );
-          },
-          (r) => emit(
-            NoteLoaded(
-              originalNote: currentEntity,
-              note: r,
+      newEntityResult.fold(
+        (l) {
+          _logger.e(l.message);
+          emit(
+            const NoteError(
+              errorMessage: 'note priority edit failed',
             ),
+          );
+        },
+        (r) => emit(
+          NoteLoaded(
+            originalNote: currentEntity,
+            note: r,
           ),
-        );
-      });
+        ),
+      );
     } on Exception catch (e) {
       _logger.e(e);
       emit(
-        const NoteError(errorMessage: 'note priority edit failed unexpectedly'),
+        const NoteError(
+          errorMessage: 'note priority edit failed unexpectedly',
+        ),
       );
     }
   }
@@ -180,9 +186,13 @@ class NoteBloc extends Bloc<NoteEvent, NoteState> {
 
       newEntityResult.fold(
         (l) {
-          _logger.e(l.message);
+          _logger.e(
+            l.message,
+          );
           emit(
-            const NoteError(errorMessage: 'note due date edit failed'),
+            const NoteError(
+              errorMessage: 'note due date edit failed',
+            ),
           );
         },
         (r) => emit(
@@ -195,7 +205,9 @@ class NoteBloc extends Bloc<NoteEvent, NoteState> {
     } on Exception catch (e) {
       _logger.e(e);
       emit(
-        const NoteError(errorMessage: 'note due date edit failed unexpectedly'),
+        const NoteError(
+          errorMessage: 'note due date edit failed unexpectedly',
+        ),
       );
     }
   }
@@ -215,7 +227,9 @@ class NoteBloc extends Bloc<NoteEvent, NoteState> {
         (l) {
           _logger.e(l.message);
           emit(
-            const NoteError(errorMessage: 'note finished status edit failed'),
+            const NoteError(
+              errorMessage: 'note finished status edit failed',
+            ),
           );
         },
         (r) => emit(
@@ -229,7 +243,8 @@ class NoteBloc extends Bloc<NoteEvent, NoteState> {
       _logger.e(e);
       emit(
         const NoteError(
-            errorMessage: 'note finished status edit failed unexpectedly'),
+          errorMessage: 'note finished status edit failed unexpectedly',
+        ),
       );
     }
   }

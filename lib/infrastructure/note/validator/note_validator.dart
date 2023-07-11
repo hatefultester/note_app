@@ -28,7 +28,22 @@ class NoteValidator implements INoteValidator {
   @override
   Either<ValueFailure<NoteTimeStampModel>, NoteTimeStampModel>
       validateNoteTimestamp({required NoteTimeStampModel timeStamp}) {
-    return Right(timeStamp);
+    return timeStamp.lastEditTime.fold(
+      () {
+        return Right(timeStamp);
+      },
+      (a) {
+        if (a.isAfter(timeStamp.creationTime)) {
+          return Right(timeStamp);
+        } else {
+          return Left(
+            InvalidLastEditTimeFailure(
+                value: timeStamp,
+                message: 'Last edit time is before creation time'),
+          );
+        }
+      },
+    );
   }
 
   @override

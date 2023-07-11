@@ -3,18 +3,19 @@ import 'dart:convert';
 import 'package:dartz/dartz.dart';
 import 'package:flutter/foundation.dart';
 
-import '../../core/error/failure.dart';
-import '../../../core/validators/enum_helper.dart';
+import '../../core/core.dart';
 import '../entity/note_entity.dart';
-import '../interfaces/i_note_validator.dart';
+import '../interfaces/note_interfaces.dart';
 import '../model/note_models.dart';
 import '../objects/note_value_objects.dart';
 
-class NoteFactory<T extends INoteValidator> {
+class NoteFactory<T extends INoteValidator> implements INoteFactory<T> {
+  @override
   final T validator;
 
   NoteFactory({required this.validator});
 
+  @override
   Future<Either<Failure, NoteEntity<T>>> createNewNote() async {
     try {
       final NoteEntity<T> note = NoteEntity(
@@ -46,41 +47,14 @@ class NoteFactory<T extends INoteValidator> {
       return Right(note);
     } on Exception catch (e) {
       return const Left(
-        UnexpectedFailure(message: 'Creating new note failed'),
-      );
-    }
-  }
-
-  Future<Either<Failure, NoteEntity<T>>> setCreationTime({
-    required DateTime creationTime,
-    required NoteEntity<T> entity,
-  }) async {
-    try {
-      final NoteTimeStampModel originalNoteTimeStampModel =
-          entity.timeStamp.object;
-      final NoteTimeStampValueObject<T> newTimeStamp = NoteTimeStampValueObject(
-        model: NoteTimeStampModel(
-          creationTime: creationTime,
-          lastEditTime: originalNoteTimeStampModel.lastEditTime,
-        ),
-        validator: validator,
-      );
-      final NoteEntity<T> newEntity = NoteEntity.copyFrom(
-        originalNote: entity,
-        timeStamp: newTimeStamp,
-      );
-      return Right(
-        newEntity,
-      );
-    } on Exception catch (e) {
-      return Left(
         UnexpectedFailure(
-          message: 'set creation time failed with exception $e',
+          message: 'Creating new note failed',
         ),
       );
     }
   }
 
+  @override
   Future<Either<Failure, NoteEntity<T>>> setDescription({
     required String description,
     required NoteEntity<T> entity,
@@ -98,11 +72,14 @@ class NoteFactory<T extends INoteValidator> {
       return Right(newEntity);
     } on Exception catch (e) {
       return Left(
-        UnexpectedFailure(message: 'set description failed with exception $e'),
+        UnexpectedFailure(
+          message: 'set description failed with exception $e',
+        ),
       );
     }
   }
 
+  @override
   Future<Either<Failure, NoteEntity<T>>> setDueDate({
     required Option<DateTime> dueDate,
     required NoteEntity<T> entity,
@@ -124,11 +101,14 @@ class NoteFactory<T extends INoteValidator> {
       return Right(newEntity);
     } on Exception catch (e) {
       return Left(
-        UnexpectedFailure(message: 'set due date failed with exception $e'),
+        UnexpectedFailure(
+          message: 'set due date failed with exception $e',
+        ),
       );
     }
   }
 
+  @override
   Future<Either<Failure, NoteEntity<T>>> setFinishedStatus({
     required bool isFinished,
     required NoteEntity<T> entity,
@@ -151,11 +131,13 @@ class NoteFactory<T extends INoteValidator> {
     } on Exception catch (e) {
       return Left(
         UnexpectedFailure(
-            message: 'set finished status failed with exception $e'),
+          message: 'set finished status failed with exception $e',
+        ),
       );
     }
   }
 
+  @override
   Future<Either<Failure, NoteEntity<T>>> setLastEditTime({
     required DateTime lastEditTime,
     required NoteEntity<T> entity,
@@ -188,6 +170,7 @@ class NoteFactory<T extends INoteValidator> {
     }
   }
 
+  @override
   Future<Either<Failure, NoteEntity<T>>> setPriority({
     required NotePriority priority,
     required NoteEntity<T> entity,
@@ -210,11 +193,13 @@ class NoteFactory<T extends INoteValidator> {
     } on Exception catch (e) {
       return Left(
         UnexpectedFailure(
-            message: 'set priority status failed with exception $e'),
+          message: 'set priority status failed with exception $e',
+        ),
       );
     }
   }
 
+  @override
   Future<Either<Failure, NoteEntity<T>>> setTitle({
     required String title,
     required NoteEntity<T> entity,
@@ -231,11 +216,14 @@ class NoteFactory<T extends INoteValidator> {
       return Right(newEntity);
     } on Exception catch (e) {
       return Left(
-        UnexpectedFailure(message: 'set title failed with exception $e'),
+        UnexpectedFailure(
+          message: 'set title failed with exception $e',
+        ),
       );
     }
   }
 
+  @override
   Future<Either<Failure, List<NoteEntity<T>>>> getListOfNotesFromJSONString(
       {required String source}) async {
     try {
@@ -262,6 +250,7 @@ class NoteFactory<T extends INoteValidator> {
     }
   }
 
+  @override
   Future<Either<Failure, String>> convertListOfNotesToJSONString(
       {required List<NoteEntity<T>> notes}) async {
     try {
@@ -292,6 +281,7 @@ class NoteFactory<T extends INoteValidator> {
     }
   }
 
+  @override
   Either<Failure, NoteEntity<T>> getNoteFromMap(
       {required Map<String, dynamic> map}) {
     try {
@@ -340,10 +330,13 @@ class NoteFactory<T extends INoteValidator> {
         ),
       );
     } on Exception catch (e) {
-      return const Left(ConvertingMapToNoteFailure());
+      return const Left(
+        ConvertingMapToNoteFailure(),
+      );
     }
   }
 
+  @override
   Either<Failure, Map<String, dynamic>> convertNoteToMap(
       {required NoteEntity<T> note}) {
     try {
@@ -361,7 +354,31 @@ class NoteFactory<T extends INoteValidator> {
             .fold(() => null, (a) => a.millisecondsSinceEpoch),
       });
     } on Exception catch (e) {
-      return const Left(MappingNoteToMapFailure());
+      return const Left(
+        MappingNoteToMapFailure(),
+      );
     }
+  }
+
+  @override
+  Future<Either<Failure, NoteEntity<T>>> setPriorityFromStringInput(
+      {required String priority, required NoteEntity<T> entity}) async {
+    final Either<ValueFailure<String>, NotePriority> notePriority =
+        EnumMapper.enumFromString<NotePriority>(
+      NotePriority.values,
+      priority,
+    );
+
+    return notePriority.fold(
+      (l) async {
+        return Left(l);
+      },
+      (r) async {
+        return await setPriority(
+          priority: r,
+          entity: entity,
+        );
+      },
+    );
   }
 }

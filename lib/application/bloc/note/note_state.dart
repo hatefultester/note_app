@@ -1,7 +1,4 @@
-import 'package:dartz/dartz.dart';
-import 'package:equatable/equatable.dart';
-
-import '../../../domain/note/entity/note_entity.dart';
+part of 'note_bloc.dart';
 
 const Option<String> _noneOption = None();
 
