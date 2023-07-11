@@ -15,5 +15,9 @@ class NotePersistence implements INotePersistence {
     throw UnimplementedError();
   }
 
-
+  @override
+  Future<Either<Failure, Unit>> clear() {
+    // TODO: implement clear
+    throw UnimplementedError();
+  }
 }
