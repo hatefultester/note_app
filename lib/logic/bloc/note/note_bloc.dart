@@ -7,9 +7,9 @@ import 'package:logger/logger.dart';
 import '../../../core/validators/enum_helper.dart';
 import '../../../core/error/failure.dart';
 import '../../../core/error/value_failure.dart';
-import '../../../domain/feature/note/entity/note_entity.dart';
-import '../../../domain/feature/note/model/note_priority_model.dart';
-import '../../../domain/feature/note/repository/note_repository.dart';
+import '../../../domain/note/entity/note_entity.dart';
+import '../../../domain/note/model/note_priority_model.dart';
+import '../../../domain/note/repository/note_repository.dart';
 import 'note_event.dart';
 import 'note_state.dart';
 

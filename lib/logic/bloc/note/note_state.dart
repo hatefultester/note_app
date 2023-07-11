@@ -1,8 +1,7 @@
 import 'package:dartz/dartz.dart';
 import 'package:equatable/equatable.dart';
 
-import '../../../domain/feature/note/entity/note_entity.dart';
-import 'note_event.dart';
+import '../../../domain/note/entity/note_entity.dart';
 
 const Option<String> _noneOption = None();
 
