@@ -10,6 +10,13 @@ class NoteEntity<T extends INoteValidator> extends Equatable {
   final NoteTimeStampValueObject<T> timeStamp;
   final NoteStatusValueObject<T> status;
 
+  bool isValid() {
+    return description.isValid &&
+        title.isValid &&
+        timeStamp.isValid &&
+        status.isValid;
+  }
+
   factory NoteEntity({
     required String id,
     required NoteDescriptionValueObject<T> description,
@@ -51,8 +58,7 @@ class NoteEntity<T extends INoteValidator> extends Equatable {
   });
 
   @override
-  List<Object?> get props =>
-      [
+  List<Object?> get props => [
         id,
         description,
         title,
