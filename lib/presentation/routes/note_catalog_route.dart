@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:note_app/presentation/routes/note_create_route.dart';
+import 'note_create_route.dart';
 
 import '../../application/bloc/note_catalog/note_catalog_bloc.dart';
 

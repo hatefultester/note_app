@@ -1,4 +1,4 @@
-import 'package:note_app/domain/note/model/note_time_stamp_model.dart';
+import '../../note/model/note_time_stamp_model.dart';
 
 import 'failure.dart';
 

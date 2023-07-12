@@ -1,8 +1,8 @@
 import 'package:dartz/dartz.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:note_app/application/bloc/note/note_bloc.dart';
-import 'package:note_app/infrastructure/note/repository/note_repository_impl.dart';
+import '../../application/bloc/note/note_bloc.dart';
+import '../../infrastructure/note/repository/note_repository_impl.dart';
 
 class NoteCreateRoute extends StatelessWidget {
   const NoteCreateRoute({Key? key}) : super(key: key);

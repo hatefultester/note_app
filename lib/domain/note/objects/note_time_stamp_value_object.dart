@@ -1,5 +1,5 @@
 
-import '../../core/value_object.dart';
+import '../../core/objects/value_object.dart';
 import '../interfaces/i_note_validator.dart';
 import '../model/note_time_stamp_model.dart';
 
