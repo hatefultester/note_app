@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../application/bloc/note_catalog/note_catalog_bloc.dart';
 import 'routes/note_catalog_route.dart';
-import '../infrastructure/note/repository/note_repository.dart';
+import '../infrastructure/note/note_repository.dart';
 
 class NoteApp extends StatelessWidget {
   const NoteApp({Key? key}) : super(key: key);

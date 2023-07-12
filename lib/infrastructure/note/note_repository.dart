@@ -1,10 +1,10 @@
 import 'package:dartz/dartz.dart';
-import '../../../domain/core/error/failure.dart';
-import '../../../domain/note/entity/note_entity.dart';
-import '../../../domain/note/factory/note_factory.dart';
-import '../../../domain/note/interfaces/i_note_repository.dart';
-import '../persistence/note_persistence.dart';
-import '../validator/note_validator.dart';
+import '../../domain/core/error/failure.dart';
+import '../../domain/note/entity/note_entity.dart';
+import '../../domain/note/factory/note_factory.dart';
+import '../../domain/note/interfaces/i_note_repository.dart';
+import 'note_persistence.dart';
+import 'note_validator.dart';
 
 class NoteRepository
     implements INoteRepository<NotePersistence, NoteValidator> {

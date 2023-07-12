@@ -1,8 +1,8 @@
 import 'package:dartz/dartz.dart';
-import '../../core/mixin/shared_preferences_mixin.dart';
+import '../core/mixin/shared_preferences_mixin.dart';
 
-import '../../../domain/core/error/failure.dart';
-import '../../../domain/note/interfaces/i_note_persistence.dart';
+import '../../domain/core/error/failure.dart';
+import '../../domain/note/interfaces/i_note_persistence.dart';
 
 class NotePersistence with SharedPreferencesMixin implements INotePersistence {
   final String _key = 'notes';

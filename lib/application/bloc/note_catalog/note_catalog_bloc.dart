@@ -6,8 +6,8 @@ import 'package:logger/logger.dart';
 
 import '../../../domain/core/core.dart';
 import '../../../domain/note/entity/note_entity.dart';
-import '../../../infrastructure/note/repository/note_repository.dart';
-import '../../../infrastructure/note/validator/note_validator.dart';
+import '../../../infrastructure/note/note_repository.dart';
+import '../../../infrastructure/note/note_validator.dart';
 
 part 'note_catalog_state.dart';
 
