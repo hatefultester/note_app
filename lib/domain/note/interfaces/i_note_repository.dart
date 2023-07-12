@@ -3,14 +3,14 @@ import 'package:dartz/dartz.dart';
 import '../../core/error/failure.dart';
 import '../entity/note_entity.dart';
 import '../factory/note_factory.dart';
-import '../interfaces/i_note_persistence.dart';
-import '../interfaces/i_note_validator.dart';
+import 'i_note_persistence.dart';
+import 'i_note_validator.dart';
 
-abstract class NoteRepository<P extends INotePersistence, V extends INoteValidator> {
+abstract class INoteRepository<P extends INotePersistence, V extends INoteValidator> {
   final NoteFactory<V> factory;
   final P persistence;
 
-  NoteRepository({
+  INoteRepository({
     required this.factory,
     required this.persistence,
   });

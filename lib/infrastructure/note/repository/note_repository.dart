@@ -1,13 +1,13 @@
 import 'package:dartz/dartz.dart';
-import 'package:note_app/domain/core/error/failure.dart';
-import 'package:note_app/domain/note/entity/note_entity.dart';
-import 'package:note_app/domain/note/factory/note_factory.dart';
-import 'package:note_app/domain/note/repository/note_repository.dart';
-import 'package:note_app/infrastructure/note/persistence/note_persistence.dart';
-import 'package:note_app/infrastructure/note/validator/note_validator.dart';
+import '../../../domain/core/error/failure.dart';
+import '../../../domain/note/entity/note_entity.dart';
+import '../../../domain/note/factory/note_factory.dart';
+import '../../../domain/note/interfaces/i_note_repository.dart';
+import '../persistence/note_persistence.dart';
+import '../validator/note_validator.dart';
 
-class NoteRepositoryImpl
-    implements NoteRepository<NotePersistence, NoteValidator> {
+class NoteRepository
+    implements INoteRepository<NotePersistence, NoteValidator> {
   @override
   final NoteFactory<NoteValidator> factory = NoteFactory<NoteValidator>(
     validator: NoteValidator(),

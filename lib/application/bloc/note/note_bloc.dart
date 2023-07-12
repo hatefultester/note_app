@@ -8,14 +8,14 @@ import 'package:logger/logger.dart';
 
 import '../../../domain/core/core.dart';
 import '../../../domain/note/entity/note_entity.dart';
-import '../../../domain/note/repository/note_repository.dart';
+import '../../../domain/note/interfaces/i_note_repository.dart';
 
 part 'note_event.dart';
 part 'note_state.dart';
 
 class NoteBloc extends Bloc<NoteEvent, NoteState> {
   final Logger _logger;
-  final NoteRepository _repository;
+  final INoteRepository _repository;
 
   NoteBloc(this._repository)
       : _logger = Logger(),

@@ -6,7 +6,7 @@ import 'package:logger/logger.dart';
 
 import '../../../domain/core/core.dart';
 import '../../../domain/note/entity/note_entity.dart';
-import '../../../infrastructure/note/repository/note_repository_impl.dart';
+import '../../../infrastructure/note/repository/note_repository.dart';
 import '../../../infrastructure/note/validator/note_validator.dart';
 
 part 'note_catalog_state.dart';
@@ -15,7 +15,7 @@ part 'note_catalog_event.dart';
 
 class NoteCatalogBloc extends Bloc<NoteCatalogEvent, NoteCatalogState> {
   final Logger _logger;
-  final NoteRepositoryImpl _repository;
+  final NoteRepository _repository;
 
   NoteCatalogBloc(this._repository)
       : _logger = Logger(),
