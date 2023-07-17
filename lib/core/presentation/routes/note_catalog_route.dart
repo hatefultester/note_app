@@ -17,7 +17,7 @@ class NoteCatalogRoute extends StatelessWidget {
               Navigator.of(context).push(
                 MaterialPageRoute(builder: (context) {
                   return const NoteCreateRoute();
-                }),
+                },),
               );
             },
             icon: const Icon(

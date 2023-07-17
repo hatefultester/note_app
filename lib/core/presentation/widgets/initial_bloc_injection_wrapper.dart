@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-
-import '../../../feature/note_catalog/application/note_catalog_bloc.dart';
-import '../../../feature/note_catalog/infrastructure/repositories/note_repository.dart';
+import 'package:note_app/feature/accessibility/presentation/injection_containers/injections.dart';
+import '../../../feature/note_catalog/presentation/injection_containers/injections.dart';
 
 class InitialBlocInjectionWrapper extends StatelessWidget {
   final Widget child;
@@ -14,15 +13,8 @@ class InitialBlocInjectionWrapper extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiBlocProvider(
       providers: [
-        BlocProvider<NoteCatalogBloc>(
-          create: (context) {
-            final repository = RepositoryProvider.of<NoteRepository>(context);
-            return NoteCatalogBloc(repository)
-              ..add(
-                CatalogRefreshed(),
-              );
-          },
-        )
+        accessibilityInjectionContainer.injectBloc(),
+        noteCatalogInjectionContainer.injectBloc(),
       ],
       child: child,
     );
