@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:note_app/feature/accessibility/presentation/injection_containers/injections.dart';
+import '../../../feature/accessibility/presentation/injection_containers/injections.dart';
 import '../../../feature/note_catalog/presentation/injection_containers/injections.dart';
 
 class InitialBlocInjectionWrapper extends StatelessWidget {

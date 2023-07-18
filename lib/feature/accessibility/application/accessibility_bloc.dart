@@ -2,8 +2,10 @@ import 'dart:async';
 import 'dart:ui';
 
 import 'package:bloc/bloc.dart';
+import 'package:dartz/dartz.dart';
 import 'package:logger/logger.dart';
 
+import '../../../core/domain/errors/failure.dart';
 import '../infrastructure/repositories/accessibility_repository.dart';
 import '../domain/entities/accessibility_entity.dart';
 import '../../note_catalog/domain/models/note_priority_model.dart';
@@ -32,6 +34,19 @@ class AccessibilityBloc extends Bloc<AccessibilityEvent, AccessibilityState> {
   FutureOr<void> _handleStartAccessibility(
       StartAccessibility event, Emitter<AccessibilityState> emit) async {
     emit(AccessibilityLoading());
+    final Either<Failure, AccessibilityEntity> entity =
+        await _repository.factory.getDefaultAccessibilityEntity();
+
+    entity.fold(
+      (l) => emit(
+        AccessibilityError(
+          message: l.message,
+        ),
+      ),
+      (r) => emit(
+        AccessibilityLoaded(entity: r),
+      ),
+    );
   }
 
   FutureOr<void> _handleRestoreAccessibility(

@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../feature/note_catalog/application/note_bloc.dart';
 import '../../../feature/note_catalog/infrastructure/repositories/note_repository.dart';
+import '../views/base_scaffold_view.dart';
 
 class NoteCreateRoute extends StatelessWidget {
   const NoteCreateRoute({Key? key}) : super(key: key);
@@ -19,8 +20,8 @@ class NoteCreateRoute extends StatelessWidget {
             ),
           );
       },
-      child: Scaffold(
-        body: BlocConsumer<NoteBloc, NoteState>(
+      child: BaseScaffoldView(
+        child: BlocConsumer<NoteBloc, NoteState>(
           listener: (context, state) {},
           builder: (context, state) {
             if (state is NoteInitial || state is NoteLoading) {

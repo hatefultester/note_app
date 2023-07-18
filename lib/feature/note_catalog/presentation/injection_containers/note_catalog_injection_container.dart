@@ -27,7 +27,7 @@ class NoteCatalogInjectionContainer
   @override
   NoteCatalogBloc createBloc(BuildContext context) => NoteCatalogBloc(
         getRepository(context),
-      );
+      )..add(CatalogRefreshed(),);
 
   @override
   NoteRepository createRepository(BuildContext context) => NoteRepository();

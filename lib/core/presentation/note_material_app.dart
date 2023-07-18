@@ -71,6 +71,7 @@ class NoteMaterialApp extends StatelessWidget {
                 title: "Note app",
                 home: const NoteCatalogRoute(),
               );
+
             }
             return const MaterialApp(
               home: Material(
@@ -79,6 +80,7 @@ class NoteMaterialApp extends StatelessWidget {
                 ),
               ),
             );
+
           },
         ),
       ),

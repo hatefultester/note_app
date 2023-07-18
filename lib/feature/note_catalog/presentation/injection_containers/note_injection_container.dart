@@ -1,3 +1,4 @@
+import 'package:dartz/dartz.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../../core/domain/interfaces/i_bloc_injection_container.dart';
@@ -17,5 +18,9 @@ class NoteInjectionContainer implements IBlocInjectionContainer<NoteBloc> {
   @override
   NoteBloc createBloc(BuildContext context) => NoteBloc(
         RepositoryProvider.of<NoteRepository>(context),
-      );
+      )..add(
+          NewNoteStarted(
+            value: optionOf(null),
+          ),
+        );
 }

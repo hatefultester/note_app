@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -16,7 +15,9 @@ class AccessibilityInjectionContainer
   AccessibilityBloc createBloc(BuildContext context) {
     return AccessibilityBloc(
       getRepository(context),
-    );
+    )..add(
+        StartAccessibility(),
+      );
   }
 
   @override

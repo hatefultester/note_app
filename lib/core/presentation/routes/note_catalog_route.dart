@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import '../views/base_scaffold_view.dart';
 import 'note_create_route.dart';
 
 import '../../../feature/note_catalog/application/note_catalog_bloc.dart';
@@ -9,7 +10,7 @@ class NoteCatalogRoute extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return BaseScaffoldView(
       appBar: AppBar(
         actions: [
           IconButton(
@@ -26,7 +27,7 @@ class NoteCatalogRoute extends StatelessWidget {
           ),
         ],
       ),
-      body: BlocConsumer<NoteCatalogBloc, NoteCatalogState>(
+      child: BlocConsumer<NoteCatalogBloc, NoteCatalogState>(
         listener: (context, state) {},
         builder: (context, state) {
           if (state is NoteCatalogLoading || state is NoteCatalogInitial) {
